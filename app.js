@@ -1,5 +1,5 @@
 // #region VARIABLES
-let kittens =  []
+let kittens = []
 let existingCat = {}
 
 let kittenCoat = ["none", "short", "long"]
@@ -16,18 +16,18 @@ let kittenMood = ["runs away", "eats his feelings", "depressed", "angry", "upset
 let adoptionForm = document.getElementById("adoptionForm")
 let kittenNameInput = document.getElementById("kitten-name")
 let adoptionButton = document.getElementById("adoption-button")
-let deleteButton = document.getElementByClassName("delete-kittens")
 let clearButton = document.getElementById("clear-kittens")
+let deleteButton = document.getElementsByClassName("delete-kittens")
 let catnipButton = document.getElementsByClassName("catnip")
-let waterButton = document.getElementByClassName("water-bottle")
-let petButton = document.getElementByClassName("pet-kitten")
+let waterButton = document.getElementsByClassName("water-bottle")
+let petButton = document.getElementsByClassName("pet-kitten")
 
 adoptionButton.addEventListener('submit', addKitten)
-deleteButton.addEventListener('click', deleteKitten)
 clearButton.addEventListener('click', clearKittens)
+deleteButton.addEventListener('click', deleteKitten)
 catnipButton.addEventListener('click', catnip)
 waterButton.addEventListener('click', waterBottle)
-petButton.addEventListener('click', petKitten) 
+petButton.addEventListener('click', petKitten)
 // #endregion BUTTONS
 
 loadKittens()
@@ -66,21 +66,21 @@ function addKitten(event) {
   existingCat = kittens.find(kitten => kitten.name == kittenName)
 
   if (!existingCat) {
-    existingCat = {id: catId, name: kittenName, license: idKitten, mood: moodKitten, feels: catFeels, affection: 2, coat: coatCat, breed: breedCat, age: ageCat, temperament: temperamentCat, size: sizeCat, trained: trainedCat, affection: kittenAffection}
+    existingCat = { id: catId, name: kittenName, license: idKitten, mood: moodKitten, feels: catFeels, coat: coatCat, breed: breedCat, age: ageCat, temperament: temperamentCat, size: sizeCat, trained: trainedCat, affection: kittenAffection }
     kittens.push(existingCat)
     saveKittens()
   }
-saveKittens()
-loadKittens()
-updateKittenHouse()
+  saveKittens()
+  loadKittens()
+  updateKittenHouse()
 };
 
 function updateKittenHouse() {
-  kittenHouse.innerHTML = "";
+  document.getElementById("kittenHouse").innerHTML = "";
 
   kittens.forEach(
-    ({id, license, name, mood, feels, coat, breed, age, temperament, size, trained, affection}) => {
-        (kittenHouse.innerHTML += `
+    ({ id, license, name, mood, feels, coat, breed, age, temperament, size, trained, affection }) => {
+      (document.getElementById("kittenHouse").innerHTML += `
         <div id="${license}" class="itFits p-1 m-2">
           <div id="catHouse"><i class="fa-solid fa-cat m-1"></i>Name: ${name}</div> 
           <div id="license-number" >License #<i class="fa-solid fa-tag m-1"></i>${license}</div>
@@ -104,14 +104,14 @@ function updateKittenHouse() {
       `)
     }
   );
-}; 
+};
 /**
  * Converts the kittens array to a JSON string then
  * Saves the string to localstorage at the key kittens 
 */
 function saveKittens() {
   window.localStorage.setItem("kittens", JSON.stringify(kittens))
-  
+
 }
 
 /**
@@ -132,11 +132,11 @@ function loadKittens() {
  */
 function drawKittens() {
   for (let i = 0; i < kittens.length; i++)
-  if (kittens[i].name = null) {
-    kittenHouse.innerHTML = ""
-  } else kittens.forEach(
-    ({id, license, name, mood, feels, coat, breed, age, temperament, size, trained, affection}) => {
-        (kittenHouse.innerHTML = `
+    if (kittens[i].name = null) {
+      document.getElementById("kittenHouse").innerHTML = ""
+    } else kittens.forEach(
+      ({ id, license, name, mood, feels, coat, breed, age, temperament, size, trained, affection }) => {
+        (document.getElementById("kittenHouse").innerHTML = `
         <div id="${license}" class="itFits p-1 m-2">
           <div id="catHouse"><i class="fa-solid fa-cat m-1"></i>Name: ${name}</div> 
           <div id="license-number" >License #<i class="fa-solid fa-tag m-1"></i>${license}</div>
@@ -158,8 +158,8 @@ function drawKittens() {
             <span class="m-1">86 Kitten</span></button>
         </div>
       `)
-    }
-  )
+      }
+    )
 }
 
 
@@ -169,7 +169,7 @@ function drawKittens() {
  * @return {Kitten}
  */
 function findKittenById(id) {
-  
+
 }
 
 function generateId() {
@@ -188,9 +188,9 @@ function petKitten(id) {
   let petValue = Math.random()
   kittens[id].mood += petValue
   let name = kittens[id].name
-  numero = Math.floor(kittens[id].mood)
+  let numero = Math.floor(kittens[id].mood)
   let catFeelings = kittenMood[numero]
-  
+
   document.getElementById(id).innerHTML = Math.floor(kittens[id].mood)
   document.getElementById(name).innerHTML = catFeelings
 
@@ -203,9 +203,9 @@ function waterBottle(id) {
   let waterBottleValue = Math.random()
   kittens[id].mood -= waterBottleValue
   let name = kittens[id].name
-  numero = Math.floor(kittens[id].mood)
+  let numero = Math.floor(kittens[id].mood)
   let catFeelings = kittenMood[numero]
-  
+
   document.getElementById(id).innerHTML = Math.floor(kittens[id].mood)
   document.getElementById(name).innerHTML = catFeelings
 
@@ -224,9 +224,9 @@ function catnip(id) {
   let catnipValue = Math.random()
   kittens[id].mood += catnipValue
   let name = kittens[id].name
-  numero = Math.floor(kittens[id].mood)
+  let numero = Math.floor(kittens[id].mood)
   let catFeelings = kittenMood[numero]
-  
+
   document.getElementById(id).innerHTML = Math.floor(kittens[id].mood)
   document.getElementById(name).innerHTML = catFeelings
 
@@ -246,18 +246,18 @@ function setKittenMood() {
  * Removes all of the kittens from the array
  * remember to save this change
  */
-function clearKittens(){
+function clearKittens() {
   window.localStorage.clear()
-  
+
   kittens.forEach(
     () => {
-        (kittenHouse.innerHTML -= `
+      (document.getElementById("kittenHouse").innerHTML -= `
         <div id="itFits" class="p-1">
         </div>
       `)
-  
+
     })
-    kittenHouse.innerHTML = ""
+  document.getElementById("kittenHouse").innerHTML = ""
   loadKittens()
 }
 
@@ -268,7 +268,7 @@ function clearKittens(){
 function deleteKitten(id) {
   localStorage.setItem("kittens", JSON.stringify(kittens))
   kittens.splice(kittenIndex, 1);
-  
+
   localStorage.setItem("data", JSON.stringify(kittens));
 
   document.getElementById(id).classList.add("hidden")
@@ -279,7 +279,7 @@ function deleteKitten(id) {
 
 /**
  * Defines the Properties of a Kitten
- * @typedef {{id:sting, name: string, mood: string, affection: number}} Kitten
+ * @typedef {{id:string, name: string, mood: string, affection: number}} Kitten
  */
 
 

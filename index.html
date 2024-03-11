@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Moody Kittens | AHunt</title>
+  <link rel="shortcut icon" href="moody-logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
+    integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/066c059df9.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="bg-dark d-flex align-items-center p-1 space-between">
+    <img src="moody-logo.png" height="60" alt="Moody Kittens">
+    <div>
+      <h2>Adopt a Kitten</h2>
+    </div>
+    <form class="adoptionForm" onsubmit="addKitten(event)">
+      <div class="d-flex">
+        <input placeholder="Name Your Kitten" type="text submit" for="adoption-button" id="kitten-name"
+          name="kittenName" required />
+        <button class="btn-special" id="adoption-button" type="submit" onsubmit="addKitten(event)">
+          /ᐠ｡ꞈ｡ᐟ\
+        </button>
+      </div>
+    </form>
+  </header>
+  <main class="container">
+    <section>
+      <div>
+        <h3 class="card">Your Cats</h3>
+      </div>
+      <div class="p-2">
+        <div id="kittenHouse" class="d-flex align-items-center flex-wrap">
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="card bg-dark text-light p-2 d-flex align-items-center justify-content-center">
+    <div><button class="clear-kittens m-2" onclick="clearKittens()"><i class="fa-solid fa-hands m-1"></i><span>Clear
+          Kittens</span></button></div>
+    <small>Created with <span style="color: var(--primary)">&hearts;</span> by CodeWorks</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

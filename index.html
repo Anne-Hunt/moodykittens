@@ -26,7 +26,7 @@
     <div>
       <h2>Adopt a Kitten</h2>
     </div>
-    <form class="adoptionForm" onsubmit="addKitten(event)">
+    <form id="adoptionForm" class="adoptionForm" onsubmit="addKitten(event)">
       <div class="d-flex">
         <input placeholder="Name Your Kitten" type="text submit" for="adoption-button" id="kitten-name"
           name="kittenName" required />
@@ -35,6 +35,12 @@
         </button>
       </div>
     </form>
+    <div id="moreButton" class="d-flex moreButton hidden">>
+      <button class="more-button" id="more-button" type="button" onclick="showFormButton()">
+        /ᐠ｡ꞈ｡ᐟ\
+      </button>
+    </div>
+
   </header>
   <main class="container">
     <section>
@@ -48,11 +54,11 @@
     </section>
   </main>
   <footer class="card bg-dark text-light p-2 d-flex align-items-center justify-content-center">
-    <div><button class="clear-kittens m-2" onclick="clearKittens()"><i class="fa-solid fa-hands m-1"></i><span>Clear
+    <div><button id="clear-kittens" class="clear-kittens m-2" onclick="clearKittens()"><i
+          class="fa-solid fa-hands m-1"></i><span>Clear
           Kittens</span></button></div>
-    <small>Created with <span style="color: var(--primary)">&hearts;</span> by CodeWorks</small>
+    <small>Created with <span style="color: var(--primary)">&hearts;</span> by a CodeWorks Student</small>
   </footer>
-
   <script src="app.js"></script>
 </body>
 

@@ -8,7 +8,7 @@ let kittenAge = ["baby", "young", "adult", "senior", "should be dead"]
 let kittenTemperament = ["hides from humans", "destroys everything", "bites people for fun", "lapcat", "bossy", "feral", "under foot", "evil mastermind"]
 let kittenSize = ["tiny", "small", "average", "large", "enormous", "chonker"]
 let kittenTrained = ["uses litterbox", "free thinker"]
-let kittenMood = ["gone", "eats his feelings", "depressed", "angry", "tolerant", "okay", "happy", "Jack on the Titanic", "overjoyed", "ecstatic", "manic", "danger to himself and others"]
+let kittenMood = ["gone", "eats his feelings", "depressed", "angry", "tolerant", "okay", "happy", "annoyingly pleased", "overjoyed", "ecstatic", "manic", "danger to himself and others"]
 
 // #endregion VARIABLES
 
@@ -16,22 +16,24 @@ let kittenMood = ["gone", "eats his feelings", "depressed", "angry", "tolerant",
 let adoptionForm = document.getElementById("adoptionForm")
 let kittenNameInput = document.getElementById("kitten-name")
 let adoptionButton = document.getElementById("adoption-button")
+let kittenHouse = document.getElementById("kittenHouse")
 let clearButton = document.getElementById("clear-kittens")
-let deleteButton = document.getElementsByClassName("delete-kittens")
-let catnipButton = document.getElementsByClassName("catnip")
-let waterButton = document.getElementsByClassName("water-bottle")
-let petButton = document.getElementsByClassName("pet-kitten")
-
+let moreButton = document.getElementById("moreButton")
+let moreBtn = document.getElementById("more-button")
 adoptionButton.addEventListener('submit', addKitten)
 clearButton.addEventListener('click', clearKittens)
-deleteButton.addEventListener('click', deleteKitten)
+moreBtn.addEventListener('click', showFormButton)
+
+let removeButton = document.getElementById("removeKitten")
+let catnipButton = document.getElementById("catnip")
+let waterButton = document.getElementById("waterBottle")
+let petButton = document.getElementById("petKitten")
+
+removeButton.addEventListener('click', removeKitten)
 catnipButton.addEventListener('click', catnip)
 waterButton.addEventListener('click', waterBottle)
 petButton.addEventListener('click', petKitten)
 // #endregion BUTTONS
-
-loadKittens()
-drawKittens()
 
 /**
  * 
@@ -49,8 +51,7 @@ function addKitten(event) {
   console.log(form.kittenName.value)
 
   let kittenName = (form.kittenName.value)
-  let kittenId = generateId()
-  let moodKitten = setKittenMood()
+  let moodKitten = 6
   let coatCat = kittenCoat[(Math.floor(Math.random() * kittenCoat.length))]
   let breedCat = kittenBreed[(Math.floor(Math.random() * kittenBreed.length))]
   let ageCat = kittenAge[(Math.floor(Math.random() * kittenAge.length))]
@@ -59,11 +60,12 @@ function addKitten(event) {
   let trainedCat = kittenTrained[(Math.floor(Math.random() * kittenTrained.length))]
   let catFeels = kittenMood[Math.floor(moodKitten)]
   let kittenAffection = Math.random()
+  let license = generateId()
 
 
   let kitten = {
     name: kittenName,
-    license: kittenId,
+    id: license,
     mood: moodKitten,
     feels: catFeels,
     coat: coatCat,
@@ -72,12 +74,17 @@ function addKitten(event) {
     temperament: temperamentCat,
     size: sizeCat,
     trained: trainedCat,
-    affection: kittenAffection
+    affection: kittenAffection,
+    license: license
   }
-  kittens.push(kitten)
+
+  if (!kittens.find(kitten => kitten.name == kitten.name)) {
+    kittens.push(kitten)
+  }
 
   saveKittens()
   form.reset()
+  hideFormButton()
 };
 
 /**
@@ -111,19 +118,18 @@ function drawKittens() {
   let catHouseTemplate = ""
   kittens.forEach(kitten => {
     catHouseTemplate += `
-      <div id="${kitten.license}" class="itFits p-1 m-2">
+      <div id="${kitten.id}" class="itFits p-1 m-2">
         <div id="catHouse">
           <i class="fa-solid fa-cat m-1"></i>Name: ${kitten.name}</div> 
       <div id="license-number" >License #
         <i class="fa-solid fa-tag m-1"></i>${kitten.license}</div>
-      <div ><img src="cat.png" alt="catimage" class="kitten ${kitten.feels}"></div>
+      <div ><img id="${kitten.id}" src="cat2.png" alt="catimage" class="kitten ${kitten.feels}"></div>
       <div id="moodDiv">Mood:
-      <span id="${kitten.id}">${kitten.mood}</span> 
       <span id="${kitten.name}">${kitten.feels}</span></div>
       <div class="d-flex align-items-center space-around m-1">
-      <button class="catnip" onclick="catnip(${kitten.id})"><i class="fa-solid fa-cannabis nip"></i> Catnip</button>
-      <button class="pet-kitten" onclick="petKitten(${kitten.id})"><i class="fa-solid fa-hand-holding-heart pet"></i>Pet</button>
-      <button class="water-bottle" onclick="waterBottle(${kitten.id})"><i class="fa-solid fa-spray-can-sparkles agua"></i></i> Spray Water</button>
+      <button id="catnip" class="catnip" type="button" onclick="catnip('${kitten.id}')"><i class="fa-solid fa-cannabis nip"></i> Catnip</button>
+      <button id="petKitten" class="pet-kitten" type="button" onclick="petKitten('${kitten.id}')"><i class="fa-solid fa-hand-holding-heart pet"></i>Pet</button>
+      <button id="waterBottle" class="water-bottle" type="button" onclick="waterBottle('${kitten.id}')"><i class="fa-solid fa-spray-can-sparkles agua"></i></i> Spray Water</button>
       </div>
       <div>Coat: ${kitten.coat}</div>
       <div>Breed: ${kitten.breed}</div>
@@ -131,123 +137,118 @@ function drawKittens() {
       <div>Temperament: ${kitten.temperament}</div>
       <div>Size: ${kitten.size}</div>
       <div>House Trained: ${kitten.trained}</div>
-      <button class="delete-kittens bg-dark m-1" onclick="deleteKittens('${kitten.id}')">
+      <button id="removeKitten" class="bg-dark m-1" type="button" onclick="removeKittens('${kitten.id}')">
       <i class="fa-solid fa-skull"></i>
       <span class="m-1">86 Kitten</span></button>
       </div>
       `
-  })
+  }
+  )
   kittenHouse.innerHTML = catHouseTemplate
-}
-
-/**
- * Find the kitten in the array by its id
- * @param {string} id 
- * @return {Kitten}
- */
-function findKittenById(id) {
-
 }
 
 function generateId() {
   return Math.floor(Math.random() * 10000000) + "-" + Math.floor(Math.random() * 10000000)
 }
 
-/**
- * Find the kitten in the array of kittens
- * Generate a random Number
- * if the number is greater than .5 
- * increase the kittens affection
- * otherwise decrease the affection
- * @param {string} id 
- */
-function petKitten(id) {
-  let petValue = Math.random()
-  kittens[id].mood += petValue
-  let name = kittens[id].name
-  let numero = Math.floor(kittens[id].mood)
-  let catFeelings = kittenMood[numero]
-
-  document.getElementById(id).innerHTML = Math.floor(kittens[id].mood)
-  document.getElementById(name).innerHTML = catFeelings
-
-  saveKittens()
-}
-
-function waterBottle(id) {
-  let waterBottleValue = Math.random()
-  kittens[id].mood -= waterBottleValue
-  let name = kittens[id].name
-  let numero = Math.floor(kittens[id].mood)
-  let catFeelings = kittenMood[numero]
-
-  document.getElementById(id).innerHTML = Math.floor(kittens[id].mood)
-  document.getElementById(name).innerHTML = catFeelings
-
-  saveKittens()
-}
-
-
-/**
- * Find the kitten in the array of kittens
- * Set the kitten's mood to tolerant
- * Set the kitten's affection to 5
- * @param {string} id
- */
-function catnip(id) {
-  let catnipValue = Math.random()
-  kittens[id].mood += catnipValue
-  let name = kittens[id].name
-  let numero = Math.floor(kittens[id].mood)
-  let catFeelings = kittenMood[numero]
-
-  document.getElementById(id).innerHTML = Math.floor(kittens[id].mood)
-  document.getElementById(name).innerHTML = catFeelings
-
-  saveKittens()
-}
-
-/**
- * Sets the kittens mood based on its affection
- * @param {Kitten} kitten 
- */
-function setKittenMood() {
+/*function setKittenMood() {
   return Math.floor(Math.random() * 5)
 }
+*/
 
-/**
- * Removes all of the kittens from the array
- * remember to save this change
- */
+function findKittenById(kittenId) {
+  if (kitten.id == 'id') {
+    return (kitten.name)
+  }
+}
+
+function petKitten(kittenId) {
+  let feelsy = document.getElementById(kitten.name);
+  let currentMood = kitten.mood
+  if (currentMood === 11) {
+    currentMood = 0;
+  }
+  else {
+    currentMood++
+  }
+  feelsy.innerHTML = (kittenMood[currentMood])
+
+  saveKittens()
+}
+/*
+if (kitten.mood == kittenMood[0] || kittenMood[1]) {
+  document.getElementById(kitten.id).classList.toggle("Gone")
+} else if (kitten.mood == kittenMood[2] || kittenMood[3] || kittenMood[4]) {
+  document.getElementById(kitten.id).classList.toggle("Angry")
+} else if (kitten.mood == kittenMood[5] || kittenMood[6]) {
+  document.getElementById(kitten.id).classList.toggle("Tolerant")
+} else if (kitten.mood == kittenMood[7] || kittenMood[8] || kittenMood[9] || kittenMood[10] || kittenMood[11]) {
+  document.getElementById(kitten.id).classList.toggle("Happy")
+}*/
+
+function waterBottle(kittenId) {
+  let feelsy = document.getElementById(kitten.name)
+  let currentMood = kitten.mood
+  if (currentMood === 0) {
+    currentMood = 11
+  }
+  else {
+    currentMood--
+  }
+  feelsy.innerHTML = kittenMood[currentMood]
+
+  saveKittens()
+}
+
+function catnip(kittenId) {
+  let feelsy = document.getElementById(kitten.name)
+  let currentMood = Number(kitten.mood)
+  if (currentMood === 11) {
+    currentMood = 0
+  }
+  else {
+    currentMood++
+  }
+  feelsy.innerHTML = (kittenMood[currentMood])
+
+  saveKittens()
+}
+
 function clearKittens() {
   window.localStorage.clear()
 
   kittens.forEach(
     () => {
-      (kittenHouse.innerHTML -= `
-        <div id="itFits" class="p-1">
-        </div>
-      `)
+      (document.getElementById("catHouse").innerHTML === `<div></div>`)
 
     })
   document.getElementById("kittenHouse").innerHTML = ""
-  loadKittens()
+
 }
 
-/**
- * Removes the welcome content and should probably draw the 
- * list of kittens to the page. Good Luck
-*/
-function deleteKitten(kittenId) {
+
+function removeKitten(kittenId) {
   let kittenIndex = kittens.findIndex(kitten => kitten.id == kittenId)
   if (kittenIndex == -1) {
     throw new Error("Bad Kitten Id")
   }
-  kittens.splice(kittenIndex, 1);
 
+  kittens.splice(kittenIndex, 1)
   saveKittens()
 }
 
+function showFormButton() {
+  /*  event.preventDefault()
+  
+    moreButton = event.target */
+  adoptionForm.classList.remove("hidden")
+  moreButton.classList.add("hidden")
+}
+
+function hideFormButton() {
+  adoptionForm.classList.add("hidden")
+  moreButton.classList.remove("hidden")
+}
 // --------------------------------------------- No Changes below this line are needed
 
 /**

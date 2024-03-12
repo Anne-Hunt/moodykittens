@@ -1,6 +1,6 @@
 // #region VARIABLES
 let kittens = []
-let existingCat = {}
+let kitten = {}
 
 let kittenCoat = ["none", "short", "long"]
 let kittenBreed = ["orange", "void", "Scottish Fold", "Maine Coon", "calico", "tiger", "white"]
@@ -8,7 +8,7 @@ let kittenAge = ["baby", "young", "adult", "senior", "should be dead"]
 let kittenTemperament = ["hides from humans", "destroys everything", "bites people for fun", "lapcat", "bossy", "feral", "under foot", "evil mastermind"]
 let kittenSize = ["tiny", "small", "average", "large", "enormous", "chonker"]
 let kittenTrained = ["uses litterbox", "free thinker"]
-let kittenMood = ["runs away", "eats his feelings", "depressed", "angry", "upset", "okay", "happy", "Jack on the Titanic", "overjoyed", "ecstatic", "manic", "danger to himself and others"]
+let kittenMood = ["gone", "eats his feelings", "depressed", "angry", "tolerant", "okay", "happy", "Jack on the Titanic", "overjoyed", "ecstatic", "manic", "danger to himself and others"]
 
 // #endregion VARIABLES
 
@@ -49,7 +49,7 @@ function addKitten(event) {
   console.log(form.kittenName.value)
 
   let kittenName = (form.kittenName.value)
-  let idKitten = generateId()
+  let kittenId = generateId()
   let moodKitten = setKittenMood()
   let coatCat = kittenCoat[(Math.floor(Math.random() * kittenCoat.length))]
   let breedCat = kittenBreed[(Math.floor(Math.random() * kittenBreed.length))]
@@ -58,53 +58,28 @@ function addKitten(event) {
   let sizeCat = kittenSize[(Math.floor(Math.random() * kittenSize.length))]
   let trainedCat = kittenTrained[(Math.floor(Math.random() * kittenTrained.length))]
   let catFeels = kittenMood[Math.floor(moodKitten)]
-  let catId = kittens.length
   let kittenAffection = Math.random()
 
-  form.reset()
 
-  existingCat = kittens.find(kitten => kitten.name == kittenName)
-
-  if (!existingCat) {
-    existingCat = { id: catId, name: kittenName, license: idKitten, mood: moodKitten, feels: catFeels, coat: coatCat, breed: breedCat, age: ageCat, temperament: temperamentCat, size: sizeCat, trained: trainedCat, affection: kittenAffection }
-    kittens.push(existingCat)
-    saveKittens()
+  let kitten = {
+    name: kittenName,
+    license: kittenId,
+    mood: moodKitten,
+    feels: catFeels,
+    coat: coatCat,
+    breed: breedCat,
+    age: ageCat,
+    temperament: temperamentCat,
+    size: sizeCat,
+    trained: trainedCat,
+    affection: kittenAffection
   }
+  kittens.push(kitten)
+
   saveKittens()
-  loadKittens()
-  updateKittenHouse()
+  form.reset()
 };
 
-function updateKittenHouse() {
-  document.getElementById("kittenHouse").innerHTML = "";
-
-  kittens.forEach(
-    ({ id, license, name, mood, feels, coat, breed, age, temperament, size, trained, affection }) => {
-      (document.getElementById("kittenHouse").innerHTML += `
-        <div id="${license}" class="itFits p-1 m-2">
-          <div id="catHouse"><i class="fa-solid fa-cat m-1"></i>Name: ${name}</div> 
-          <div id="license-number" >License #<i class="fa-solid fa-tag m-1"></i>${license}</div>
-          <div ><img src="moody-logo.png" alt="catimage" class="kitten"></div>
-          <div id="moodDiv">Mood:<span id="${id}">${mood}</span> <span id="${name}">${feels}</span></div>
-            <div class="d-flex align-items-center space-around m-1">
-            <button class="catnip" onclick="catnip(${id})"><i class="fa-solid fa-cannabis nip"></i> Catnip</button>
-            <button class="pet-kitten" onclick="petKitten(${id})"><i class="fa-solid fa-hand-holding-heart pet"></i>Pet</button>
-            <button class="water-bottle" onclick="waterBottle(${id})"><i class="fa-solid fa-spray-can-sparkles agua"></i></i> Spray Water</button>
-            </div>
-            <div>Coat: ${coat}</div>
-            <div>Breed: ${breed}</div>
-            <div>Age: ${age}</div>
-            <div>Temperament: ${temperament}</div>
-            <div>Size: ${size}</div>
-            <div>House Trained: ${trained}</div>
-            <button class="delete-kittens bg-dark m-1" onclick="deleteKittens(${id})">
-            <i class="fa-solid fa-skull"></i>
-            <span class="m-1">86 Kitten</span></button>
-        </div>
-      `)
-    }
-  );
-};
 /**
  * Converts the kittens array to a JSON string then
  * Saves the string to localstorage at the key kittens 
@@ -112,6 +87,7 @@ function updateKittenHouse() {
 function saveKittens() {
   window.localStorage.setItem("kittens", JSON.stringify(kittens))
 
+  drawKittens()
 }
 
 /**
@@ -129,39 +105,40 @@ function loadKittens() {
 
 /**
  * Draw all of the kittens to the kittens element
- */
+*/
 function drawKittens() {
-  for (let i = 0; i < kittens.length; i++)
-    if (kittens[i].name = null) {
-      document.getElementById("kittenHouse").innerHTML = ""
-    } else kittens.forEach(
-      ({ id, license, name, mood, feels, coat, breed, age, temperament, size, trained, affection }) => {
-        (document.getElementById("kittenHouse").innerHTML = `
-        <div id="${license}" class="itFits p-1 m-2">
-          <div id="catHouse"><i class="fa-solid fa-cat m-1"></i>Name: ${name}</div> 
-          <div id="license-number" >License #<i class="fa-solid fa-tag m-1"></i>${license}</div>
-          <div ><img src="moody-logo.png" alt="catimage" class="kitten"></div>
-          <div id="moodDiv">Mood:<span id="${id}">${mood}</span> <span id="${name}">${feels}</span></div>
-            <div class="d-flex align-items-center space-around m-1">
-            <button class="catnip" onclick="catnip(${id})"><i class="fa-solid fa-cannabis nip"></i> Catnip</button>
-            <button class="pet-kitten" onclick="petKitten(${id})"><i class="fa-solid fa-hand-holding-heart pet"></i>Pet</button>
-            <button class="water-bottle" onclick="waterBottle(${id})"><i class="fa-solid fa-spray-can-sparkles agua"></i></i> Spray Water</button>
-            </div>
-            <div>Coat: ${coat}</div>
-            <div>Breed: ${breed}</div>
-            <div>Age: ${age}</div>
-            <div>Temperament: ${temperament}</div>
-            <div>Size: ${size}</div>
-            <div>House Trained: ${trained}</div>
-            <button class="delete-kittens bg-dark m-1" onclick="deleteKittens(${id})">
-            <i class="fa-solid fa-skull"></i>
-            <span class="m-1">86 Kitten</span></button>
-        </div>
-      `)
-      }
-    )
+  let kittenHouse = document.getElementById("kittenHouse")
+  let catHouseTemplate = ""
+  kittens.forEach(kitten => {
+    catHouseTemplate += `
+      <div id="${kitten.license}" class="itFits p-1 m-2">
+        <div id="catHouse">
+          <i class="fa-solid fa-cat m-1"></i>Name: ${kitten.name}</div> 
+      <div id="license-number" >License #
+        <i class="fa-solid fa-tag m-1"></i>${kitten.license}</div>
+      <div ><img src="cat.png" alt="catimage" class="kitten ${kitten.feels}"></div>
+      <div id="moodDiv">Mood:
+      <span id="${kitten.id}">${kitten.mood}</span> 
+      <span id="${kitten.name}">${kitten.feels}</span></div>
+      <div class="d-flex align-items-center space-around m-1">
+      <button class="catnip" onclick="catnip(${kitten.id})"><i class="fa-solid fa-cannabis nip"></i> Catnip</button>
+      <button class="pet-kitten" onclick="petKitten(${kitten.id})"><i class="fa-solid fa-hand-holding-heart pet"></i>Pet</button>
+      <button class="water-bottle" onclick="waterBottle(${kitten.id})"><i class="fa-solid fa-spray-can-sparkles agua"></i></i> Spray Water</button>
+      </div>
+      <div>Coat: ${kitten.coat}</div>
+      <div>Breed: ${kitten.breed}</div>
+      <div>Age: ${kitten.age}</div>
+      <div>Temperament: ${kitten.temperament}</div>
+      <div>Size: ${kitten.size}</div>
+      <div>House Trained: ${kitten.trained}</div>
+      <button class="delete-kittens bg-dark m-1" onclick="deleteKittens('${kitten.id}')">
+      <i class="fa-solid fa-skull"></i>
+      <span class="m-1">86 Kitten</span></button>
+      </div>
+      `
+  })
+  kittenHouse.innerHTML = catHouseTemplate
 }
-
 
 /**
  * Find the kitten in the array by its id
@@ -195,8 +172,6 @@ function petKitten(id) {
   document.getElementById(name).innerHTML = catFeelings
 
   saveKittens()
-  loadKittens()
-
 }
 
 function waterBottle(id) {
@@ -210,7 +185,6 @@ function waterBottle(id) {
   document.getElementById(name).innerHTML = catFeelings
 
   saveKittens()
-  loadKittens()
 }
 
 
@@ -231,7 +205,6 @@ function catnip(id) {
   document.getElementById(name).innerHTML = catFeelings
 
   saveKittens()
-  loadKittens()
 }
 
 /**
@@ -251,7 +224,7 @@ function clearKittens() {
 
   kittens.forEach(
     () => {
-      (document.getElementById("kittenHouse").innerHTML -= `
+      (kittenHouse.innerHTML -= `
         <div id="itFits" class="p-1">
         </div>
       `)
@@ -265,14 +238,14 @@ function clearKittens() {
  * Removes the welcome content and should probably draw the 
  * list of kittens to the page. Good Luck
 */
-function deleteKitten(id) {
-  localStorage.setItem("kittens", JSON.stringify(kittens))
+function deleteKitten(kittenId) {
+  let kittenIndex = kittens.findIndex(kitten => kitten.id == kittenId)
+  if (kittenIndex == -1) {
+    throw new Error("Bad Kitten Id")
+  }
   kittens.splice(kittenIndex, 1);
 
-  localStorage.setItem("data", JSON.stringify(kittens));
-
-  document.getElementById(id).classList.add("hidden")
-
+  saveKittens()
 }
 
 // --------------------------------------------- No Changes below this line are needed
@@ -289,3 +262,4 @@ function deleteKitten(id) {
  * @returns {string}
 */
 loadKittens()
+drawKittens()

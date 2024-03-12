@@ -8,7 +8,7 @@ let kittenAge = ["baby", "young", "adult", "senior", "should be dead"]
 let kittenTemperament = ["hides from humans", "destroys everything", "bites people for fun", "lapcat", "bossy", "feral", "under foot", "evil mastermind"]
 let kittenSize = ["tiny", "small", "average", "large", "enormous", "chonker"]
 let kittenTrained = ["uses litterbox", "free thinker"]
-let kittenMood = ["gone", "eats his feelings", "depressed", "angry", "tolerant", "okay", "happy", "annoyingly pleased", "overjoyed", "ecstatic", "manic", "danger to himself and others"]
+let kittenMood = ["gone", "angry", "tolerant", "happy"]
 
 // #endregion VARIABLES
 
@@ -114,7 +114,7 @@ function drawKittens() {
           <i class="fa-solid fa-cat m-1"></i>Name: ${kitten.name}</div> 
       <div id="license-number" >License #
         <i class="fa-solid fa-tag m-1"></i>${kitten.license}</div>
-      <div ><img id="${kitten.id}" src="cat2.png" alt="catimage" class="kitten ${kitten.feels}"></div>
+      <div ><img id="${kitten.id}" src="cat2.png" alt="catimage" class="kitten ${kitten.mood}"></div>
       <div id="moodDiv">Mood:
       <span id="${kitten.name}">${kitten.feels}</span></div>
       <div class="d-flex align-items-center space-around m-1">

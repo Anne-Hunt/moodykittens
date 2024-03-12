@@ -9,6 +9,7 @@ let kittenTemperament = ["hides from humans", "destroys everything", "bites peop
 let kittenSize = ["tiny", "small", "average", "large", "enormous", "chonker"]
 let kittenTrained = ["uses litterbox", "free thinker"]
 let kittenMood = ["gone", "angry", "tolerant", "happy"]
+let moodKitten = 2
 
 // #endregion VARIABLES
 
@@ -53,7 +54,7 @@ function addKitten(event) {
   console.log(form.kittenName.value)
 
   let kittenName = (form.kittenName.value)
-  let moodKitten = setKittenMood()
+  let moodKitten
   let coatCat = kittenCoat[(Math.floor(Math.random() * kittenCoat.length))]
   let breedCat = kittenBreed[(Math.floor(Math.random() * kittenBreed.length))]
   let ageCat = kittenAge[(Math.floor(Math.random() * kittenAge.length))]
@@ -62,7 +63,7 @@ function addKitten(event) {
   let trainedCat = kittenTrained[(Math.floor(Math.random() * kittenTrained.length))]
   let catFeels = kittenMood[Math.floor(moodKitten)]
   let kittenAffection = Math.random()
-  let license = generateId()
+  let kittenLicense = generateId()
   let catId = kittens.length
 
 
@@ -78,10 +79,10 @@ function addKitten(event) {
     size: sizeCat,
     trained: trainedCat,
     affection: kittenAffection,
-    license: license
+    license: kittenLicense
   }
 
-  if (!kittens.find(kitten => kitten.id == kitten.id)) {
+  if (!kittens.find(kitten => kitten.name == kittenName)) {
     kittens.push(kitten)
   }
 
@@ -110,11 +111,11 @@ function drawKittens() {
   kittens.forEach(kitten => {
     catHouseTemplate += `
       <div id="${kitten.id}" class="itFits p-1 m-2">
-        <div id="catHouse">
-          <i class="fa-solid fa-cat m-1"></i>Name: ${kitten.name}</div> 
+        <div id="catHouse" >
+          <i class="fa-solid fa-cat m-1"></i><span class="kitten">Name: ${kitten.name}</span></div> 
       <div id="license-number" >License #
         <i class="fa-solid fa-tag m-1"></i>${kitten.license}</div>
-      <div ><img id="${kitten.id}" src="cat2.png" alt="catimage" class="kitten ${kitten.mood}"></div>
+      <div ><img id="${kitten.id}" src="cat.png" alt="catimage" class="kitten ${kitten.feels}"></div>
       <div id="moodDiv">Mood:
       <span id="${kitten.name}">${kitten.feels}</span></div>
       <div class="d-flex align-items-center space-around m-1">
@@ -135,7 +136,7 @@ function drawKittens() {
       `
   }
   )
-  kittenHouse.innerHTML = catHouseTemplate
+  kittenHouse.innerHTML += catHouseTemplate
 }
 
 function generateId() {
@@ -155,13 +156,10 @@ function findKittenById(kittenId) {
 function petKitten(kittenId) {
   let feelsy = document.getElementById(kitten.name);
   let currentMood = kitten.mood
-  if (currentMood === 11) {
-    currentMood = 0;
-  }
-  else {
-    currentMood++
-  }
-  feelsy.innerHTML = (kittenMood[currentMood])
+
+  currentMood++
+
+  feelsy.innerHTML = (kittens[currentMood].mood)
 
   saveKittens()
 }
@@ -179,27 +177,24 @@ if (kitten.mood == kittenMood[0] || kittenMood[1]) {
 function waterBottle(kittenId) {
   let feelsy = document.getElementById(kitten.name)
   let currentMood = kitten.mood
-  if (currentMood === 0) {
-    currentMood = 11
-  }
-  else {
-    currentMood--
-  }
-  feelsy.innerHTML = kittenMood[currentMood]
+
+  currentMood--
+
+  feelsy.innerHTML = (kittens[currentMood].mood)
 
   saveKittens()
 }
 
 function catnip(kittenId) {
   let feelsy = document.getElementById(kitten.name)
-  let currentMood = Number(kitten.mood)
-  if (currentMood === 11) {
-    currentMood = 0
-  }
-  else {
-    currentMood++
-  }
-  feelsy.innerHTML = (kittenMood[currentMood])
+  let currentMood = moodKitten
+
+  currentMood++
+  let updateMood = kittenMood[currentMood]
+
+  kitten.feels = updateMood
+
+  feelsy.innerHTML = kitten.feels
 
   saveKittens()
 }

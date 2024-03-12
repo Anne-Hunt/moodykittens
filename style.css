@@ -222,23 +222,44 @@ button.more-button:hover {
 
 .kitten.happy img {
   filter: drop-shadow(2px 4px 6px #00ffb3);
+  background-color: green;
+}
+
+.happy {
+  background-color: green;
 }
 
 .kitten.tolerant img {
   filter: drop-shadow(2px 4px 6px #646464);
+  background-color: yellow;
+}
+
+.tolerant {
+  background-color: yellow;
 }
 
 .kitten.angry img {
   filter: drop-shadow(2px 4px 6px #ff0000) contrast(1);
+  background-color: orange;
+}
+
+.angry {
+  background-color: orange;
 }
 
 .kitten.gone img {
   filter: drop-shadow(2px 4px 6px #ff0000) contrast(0);
+  background-color: black;
+}
+
+.gone {
+  background-color: black;
 }
 
 .kitten.gone {
   color: var(--danger);
   pointer-events: none;
+  color: black;
 }
 
 button.catnip {

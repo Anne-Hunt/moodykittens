@@ -35,6 +35,8 @@ waterButton.addEventListener('click', waterBottle)
 petButton.addEventListener('click', petKitten)
 // #endregion BUTTONS
 
+loadKittens()
+drawKittens()
 /**
  * 
  * Called when submitting the new Kitten Form
@@ -51,7 +53,7 @@ function addKitten(event) {
   console.log(form.kittenName.value)
 
   let kittenName = (form.kittenName.value)
-  let moodKitten = 6
+  let moodKitten = setKittenMood()
   let coatCat = kittenCoat[(Math.floor(Math.random() * kittenCoat.length))]
   let breedCat = kittenBreed[(Math.floor(Math.random() * kittenBreed.length))]
   let ageCat = kittenAge[(Math.floor(Math.random() * kittenAge.length))]
@@ -61,11 +63,12 @@ function addKitten(event) {
   let catFeels = kittenMood[Math.floor(moodKitten)]
   let kittenAffection = Math.random()
   let license = generateId()
+  let catId = kittens.length
 
 
   let kitten = {
     name: kittenName,
-    id: license,
+    id: catId,
     mood: moodKitten,
     feels: catFeels,
     coat: coatCat,
@@ -78,30 +81,21 @@ function addKitten(event) {
     license: license
   }
 
-  if (!kittens.find(kitten => kitten.name == kitten.name)) {
+  if (!kittens.find(kitten => kitten.id == kitten.id)) {
     kittens.push(kitten)
   }
 
   saveKittens()
+  loadKittens()
   form.reset()
-  hideFormButton()
 };
 
-/**
- * Converts the kittens array to a JSON string then
- * Saves the string to localstorage at the key kittens 
-*/
 function saveKittens() {
   window.localStorage.setItem("kittens", JSON.stringify(kittens))
 
   drawKittens()
 }
 
-/**
- * Attempts to retrieve the kittens string from localstorage
- * then parses the JSON string into an array. Finally sets
- * the kittens array to the retrieved array
-*/
 function loadKittens() {
   let kittensData = JSON.parse(window.localStorage.getItem("kittens"))
 
@@ -110,9 +104,6 @@ function loadKittens() {
   }
 }
 
-/**
- * Draw all of the kittens to the kittens element
-*/
 function drawKittens() {
   let kittenHouse = document.getElementById("kittenHouse")
   let catHouseTemplate = ""
@@ -151,10 +142,9 @@ function generateId() {
   return Math.floor(Math.random() * 10000000) + "-" + Math.floor(Math.random() * 10000000)
 }
 
-/*function setKittenMood() {
+function setKittenMood() {
   return Math.floor(Math.random() * 5)
 }
-*/
 
 function findKittenById(kittenId) {
   if (kitten.id == 'id') {
@@ -262,5 +252,3 @@ function hideFormButton() {
  * database generated Id
  * @returns {string}
 */
-loadKittens()
-drawKittens()
